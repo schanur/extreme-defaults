@@ -1,0 +1,37 @@
+#!/bin/bash
+set -o errexit -o nounset -o pipefail
+
+# Command line parameter parsing and dependency checks.
+function desc  { echo "Create a new qcow2 virtual machine image with performance optimizations."; }
+function usage { echo "Usage: fast-qemu-img HD_IMAGE_FILENAME SIZE"; }
+if [ ${#} -eq 1 ]; then if [ ${1} = "-h" -o ${1} = "--help" ]; then desc; echo; usage; exit 0; fi; fi
+OK=1; which ionice  > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "ionice not found"; exit 1; fi
+OK=1; which nice    > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "nice not found"; exit 1; fi
+OK=1; which chrt    > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "chrt not found"; exit 1; fi
+
+
+if [ ${#} -ne 2 ]; then echo "Wrong number of arguments."; echo; usage; exit 1; fi
+
+
+function create_qcow2_image_file {
+    local HD_IMAGE_NAME=${1}
+    local HD_IMAGE_SIZE=${2}
+
+    local EXIT_STATUS
+    local CMD
+
+    CMD="qemu-img create                          \
+         -f qcow2                                 \
+         -o compat=1.1,nocow=on,lazy_refcounts=on \
+         ${HD_IMAGE_NAME} ${HD_IMAGE_SIZE}"
+    echo ${CMD}
+    ${CMD}
+    EXIT_STATUS=${?}
+    return ${EXIT_STATUS}
+}
+
+function main {
+    create_qcow2_image_file "${@}"
+}
+
+main "${@}"

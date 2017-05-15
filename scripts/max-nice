@@ -1,0 +1,51 @@
+#!/bin/bash
+set -o errexit -o nounset -o pipefail
+
+# Command line parameter parsing and dependency checks.
+function desc  { echo \
+"Runs a program with the least possible priority on IO/CPU/etc.
+
+It currently uses 4 different ways to reduce impact on other programs.
+
+1) Syncronization directives like sync, fsync, fdatasync, etc. have
+   no effect. This is the only option which is considered
+   dangerous. Therefore it can be disabled with the "--barrier / -b"
+   option
+2) Set the process to the lowest possible IO class. (ionice -c3)
+3) Set the nice value to 19
+4) Set scheduling class to \"idle\""; }
+function usage { echo "Usage: max-nice [-b|--barrier] COMMAND"; }
+if [ ${#} -eq 1 ]; then if [ ${1} = "-h" -o ${1} = "--help" ]; then desc; echo; usage; exit 0; fi; fi
+OK=1; which ionice  > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "ionice not found"; exit 1; fi
+OK=1; which nice    > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "nice not found"; exit 1; fi
+OK=1; which chrt    > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "chrt not found"; exit 1; fi
+
+
+if [ ${#} -eq 0 ]; then echo "Wrong number of arguments."; echo; usage; exit 1; fi
+
+
+IO_BARRIER_DISABLE_CMD="eatmydata"
+IONICE_CMD="ionice -c3"
+NICE_CMD="nice -n 19"
+CHRT_CMD="chrt -i 0"
+
+case "${1}" in
+    -b|--barrier)
+        OK=1; which eatmydata > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "eatmydata  not found"; exit 1; fi
+        IO_BARRIER_DISABLE_CMD=""
+        echo "Syncronization directives enabled."
+        shift
+        ;;
+    -*|--*)
+        echo "Unknown option"
+        exit 1
+        ;;
+    *)
+        true
+        ;;
+esac
+
+CMD=${*}
+
+${IO_BARRIER_DISABLE_CMD} ${IONICE_CMD} ${NICE_CMD} ${CHRT_CMD} ${CMD}
+exit ${?}
