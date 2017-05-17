@@ -2,7 +2,7 @@
 set -o errexit -o nounset -o pipefail
 
 # Command line parameter parsing and dependency checks.
-function desc  { echo "Create an encrypted partition with LUKS header."; }
+function desc  { echo "Create an encrypted partition with LUKS header"; }
 function usage { echo "Usage: max-secure-luks-format BLOC_DEVICE"; }
 if [ ${#} -eq 1 ]; then if [ ${1} = "-h" -o ${1} = "--help" ]; then desc; echo; usage; exit 0; fi; fi
 OK=1; cryptsetup > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "cryptsetup not found"; exit 1; fi

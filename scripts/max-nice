@@ -2,8 +2,7 @@
 set -o errexit -o nounset -o pipefail
 
 # Command line parameter parsing and dependency checks.
-function desc  { echo \
-"Runs a program with the least possible priority on IO/CPU/etc.
+function desc  { echo "Run an application with the least intruding scheduling policies on CPU, IO, fsync operations
 
 It currently uses 4 different ways to reduce impact on other programs.
 
@@ -22,7 +21,6 @@ OK=1; which chrt    > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "chrt not
 
 
 if [ ${#} -eq 0 ]; then echo "Wrong number of arguments."; echo; usage; exit 1; fi
-
 
 IO_BARRIER_DISABLE_CMD="eatmydata"
 IONICE_CMD="ionice -c3"

@@ -2,7 +2,7 @@
 set -o errexit -o nounset -o pipefail
 
 # Command line parameter parsing and dependency checks.
-function desc  { echo "Create a new qcow2 virtual machine image with performance optimizations."; }
+function desc  { echo "Create a new qcow2 virtual machine image with performance optimizations"; }
 function usage { echo "Usage: fast-qemu-img HD_IMAGE_FILENAME SIZE"; }
 if [ ${#} -eq 1 ]; then if [ ${1} = "-h" -o ${1} = "--help" ]; then desc; echo; usage; exit 0; fi; fi
 OK=1; which ionice  > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "ionice not found"; exit 1; fi
@@ -11,7 +11,6 @@ OK=1; which chrt    > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "chrt not
 
 
 if [ ${#} -ne 2 ]; then echo "Wrong number of arguments."; echo; usage; exit 1; fi
-
 
 function create_qcow2_image_file {
     local HD_IMAGE_NAME=${1}

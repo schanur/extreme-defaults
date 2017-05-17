@@ -2,7 +2,7 @@
 set -o errexit -o nounset -o pipefail
 
 # Command line parameter parsing and dependency checks.
-function desc  { echo "Download the YouTube video with the highest audio quality and extract the audio file."; }
+function desc  { echo "Download the YouTube video with the highest audio quality and extract the audio file"; }
 function usage { echo "Usage: max-quality-yt-music-dl URL"; }
 if [ ${#} -eq 1 ]; then if [ ${1} = "-h" -o ${1} = "--help" ]; then desc; echo; usage; exit 0; fi; fi
 OK=1; which youtube-dl > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "youtube-dl not found"; exit 1; fi
