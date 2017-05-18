@@ -13,7 +13,7 @@ It currently uses 4 different ways to reduce impact on other programs.
 2) Set the process to the lowest possible IO class. (ionice -c3)
 3) Set the nice value to 19
 4) Set scheduling class to \"idle\""; }
-function usage { echo "Usage: max-nice [-b|--barrier] COMMAND"; }
+function usage { echo "Usage: $(basename ${0}) [-b|--barrier] COMMAND"; }
 if [ ${#} -eq 1 ]; then if [ ${1} = "-h" -o ${1} = "--help" ]; then desc; echo; usage; exit 0; fi; fi
 OK=1; which ionice  > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "ionice not found"; exit 1; fi
 OK=1; which nice    > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "nice not found"; exit 1; fi

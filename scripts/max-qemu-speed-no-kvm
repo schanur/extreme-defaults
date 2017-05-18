@@ -2,8 +2,8 @@
 set -o errexit -o nounset -o pipefail
 
 # Command line parameter parsing and dependency checks.
-function desc  { echo "Start a qemu instance with settings optimized for speed"; }
-function usage { echo "Usage: fast-qemu HD_IMAGE_FILE"; }
+function desc  { echo "Start a qemu instance with settings optimized for speed but without hardware virtualization support"; }
+function usage { echo "Usage: $(basename ${0}) HD_IMAGE_FILE"; }
 if [ ${#} -eq 1 ]; then if [ ${1} = "-h" -o ${1} = "--help" ]; then desc; echo; usage; exit 0; fi; fi
 OK=1; which qemu-system-x86_64 > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "qemu-system-x86_64 not found"; exit 1; fi
 
@@ -22,9 +22,8 @@ function start_vm {
     local ARGS=""
     local NIC_MODEL=""
     local GPU_MODEL="-vga qxl"
-    local CPU_MODEL="-cpu host"
-    local MACHINE_TYPE="-machine type=pc-i440fx-2.1,accel=kvm"
-    local ENABLE_KVM="-enable-kvm"
+    # local CPU_MODEL="-cpu host"
+    local MACHINE_TYPE="-machine type=pc-i440fx-2.1"
 
     if [ ${#} -ge 2 ]; then
         shift
@@ -48,7 +47,6 @@ function start_vm {
         ${EMU_BINARY}                                   \
         -smp 2,sockets=1,cores=2,threads=1              \
         ${CPU_MODEL}                                    \
-        ${ENABLE_KVM}                                   \
         -m 2048                                         \
         ${GPU_MODEL}                                    \
         ${MACHINE_TYPE}                                 \
