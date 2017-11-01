@@ -10,6 +10,7 @@
 ### Compression
 * **max-xz-compression:** xz with parameters for maximum compression
 * **max-strip:** Strip as many unused symbols from a binary as possible
+* **max-upx-compression:** UPX binary compressor with parameters for maximum compression
 
 ### Scheduling
 * **max-nice:** Run an application with the least intruding scheduling policies on CPU, IO, fsync operations
