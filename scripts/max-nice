@@ -29,7 +29,7 @@ CHRT_CMD="chrt -i 0"
 
 case "${1}" in
     -b|--barrier)
-        OK=1; which eatmydata > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "eatmydata  not found"; exit 1; fi
+        OK=1; which eatmydata > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "eatmydata not found"; exit 1; fi
         IO_BARRIER_DISABLE_CMD=""
         echo "Syncronization directives enabled."
         shift
