@@ -11,11 +11,17 @@ OK=1; cryptsetup > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "cryptsetup 
 if [ ${#} -ne 1 ]; then echo "Wrong number of arguments."; echo; usage; exit 1; fi
 
 BLOCK_DEVICE=${1}
+# Select a random iter-time between 5000 and 5499
+MINIMUM_ITER_TIME=5000
+MAX_ITER_TIME_RAND=500
+ITER_TIME="$(( ( RANDOM % MAX_ITER_TIME_RAND ) + MINIMUM_ITER_TIME ))"
 
-cryptsetup luksFormat    ${BLOCK_DEVICE}            \
+echo "Set \"iter-time\" to ${ITER_TIME}"
+
+if [ $(id -u) -ne 0 ]; then echo "Root passwort required."; fi
+su -c "cryptsetup luksFormat    ${BLOCK_DEVICE}     \
            --cipher             twofish-xts-plain64 \
            --key-size           512                 \
            --hash               sha512              \
-           --iter-time          5432                \
-           --verify-passphrase
-}
+           --iter-time          ${ITER_TIME}        \
+           --verify-passphrase"
