@@ -23,6 +23,7 @@
 
 ### Security
 * **max-secure-luks-format:** Create a LUKS dm-crypt volume with very secure crypto/hash settings
+* **max-secure-ssh-keygen:** Create a SSH RSA key with high security margin
 
 ### Virtualization
 * **max-qemu-speed:** Start a qemu instance with settings optimized for speed
