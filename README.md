@@ -4,6 +4,7 @@
 
 ### Multimedia
 * **max-audio-extraction-quality** Extract an audio stream from a container format (video + audio) without transcoding
+* **max-flac-compression:** flac with parameters for maximum compression
 * **max-optipng:** Runs optipng with slowest settings to archieve maximum PNG file compression
 * **max-pngcrush:** Produce the smallest possible PNG file pngcrush can produce
 * **max-quality-yt-music-dl:** Download the YouTube video with the highest audio quality and extract the audio file

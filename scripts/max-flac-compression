@@ -1,0 +1,13 @@
+#!/bin/bash
+set -o errexit -o nounset -o pipefail
+
+# Command line parameter parsing and dependency checks.
+function desc  { echo "flac with parameters for maximum compression"; }
+function usage { echo "Usage: $(basename ${0}) AUDIO_INPUT_FILE"; }
+if [ ${#} -eq 1 ]; then if [ ${1} = "-h" -o ${1} = "--help" ]; then desc; echo; usage; exit 0; fi; fi
+OK=1; which flac > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "flac not found"; exit 1; fi
+
+
+if [ ${#} -le 1 ]; then echo "Wrong number of arguments."; echo; usage; exit 1; fi
+
+flac --best -e -m $*
