@@ -1,0 +1,13 @@
+#!/bin/bash
+set -o errexit -o nounset -o pipefail
+
+# Command line parameter parsing and dependency checks.
+function desc  { echo "Extract an audio stream from a container format (video + audio) without transcoding"; }
+function usage { echo "Usage: $(basename ${0}) PNG_INPUT_FILE"; }
+if [ ${#} -eq 1 ]; then if [ ${1} = "-h" -o ${1} = "--help" ]; then desc; echo; usage; exit 0; fi; fi
+OK=1; which avconv > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "optipng not found"; exit 1; fi
+
+
+if [ ${#} -ne 2 ]; then echo "Wrong number of arguments."; echo; usage; exit 1; fi
+
+avconv -i "${1}" -map 0:1 -c:a copy "${2}"
