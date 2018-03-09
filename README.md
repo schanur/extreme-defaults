@@ -9,6 +9,7 @@
 
 ### Compression
 * **max-xz-compression:** xz with parameters for maximum compression
+* **max-zstd-compression:** zstd with parameters for maximum compression
 * **max-strip:** Strip as many unused symbols from a binary as possible
 * **max-upx-compression:** UPX binary compressor with parameters for maximum compression
 
