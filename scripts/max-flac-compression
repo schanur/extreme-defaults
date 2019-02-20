@@ -8,6 +8,6 @@ if [ ${#} -eq 1 ]; then if [ ${1} = "-h" -o ${1} = "--help" ]; then desc; echo; 
 OK=1; which flac > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "flac not found"; exit 1; fi
 
 
-if [ ${#} -le 1 ]; then echo "Wrong number of arguments."; echo; usage; exit 1; fi
+if [ ${#} -lt 1 ]; then echo "Wrong number of arguments."; echo; usage; exit 1; fi
 
-flac --best -e -m $*
+flac --best -e -m "${@}"
