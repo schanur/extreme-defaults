@@ -1,0 +1,13 @@
+#!/bin/bash
+set -o errexit -o nounset -o pipefail
+
+# Command line parameter parsing and dependency checks.
+function desc  { echo "Lame MP3 encoder with parameters for maximum compression"; }
+function usage { echo "Usage: $(basename ${0}) AUDIO_INPUT_FILE"; }
+if [ ${#} -eq 1 ]; then if [ ${1} = "-h" -o ${1} = "--help" ]; then desc; echo; usage; exit 0; fi; fi
+OK=1; which lame > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "lame not found"; exit 1; fi
+
+
+if [ ${#} -lt 1 ]; then echo "Wrong number of arguments."; echo; usage; exit 1; fi
+
+lame -m j --replaygain-accurate --clipdetect --add-id3v2 -q 0 -V 2 "${@}"
