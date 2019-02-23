@@ -10,5 +10,9 @@ OK=1; which optipng > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "optipng 
 
 if [ ${#} -eq 0 ]; then echo "Wrong number of arguments."; echo; usage; exit 1; fi
 
-xz --lzma2=nice=273 -9 -e -v ${*}
+# Dictionary size in mibibyte. Memory usage during compression can be
+# as 11 times that high.
+DICT_SIZE=512
+
+xz --lzma2=dict=${DICT_SIZE}Mi,nice=273 -9 -e -v ${*}
 # xz -9 -e -v --lzma2=nice=273,depth=1000 ${*}
