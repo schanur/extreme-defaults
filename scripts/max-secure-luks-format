@@ -21,7 +21,7 @@ echo "Set \"iter-time\" to ${ITER_TIME}"
 
 if [ $(id -u) -ne 0 ]; then echo "Root passwort required."; fi
 su - -c "cryptsetup luksFormat    ${BLOCK_DEVICE}     \
-             --cipher             twofish-xts-plain64 \
+             --cipher             serpent-xts-plain64 \
              --key-size           512                 \
              --hash               sha512              \
              --iter-time          ${ITER_TIME}        \
