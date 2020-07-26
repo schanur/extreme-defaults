@@ -10,4 +10,4 @@ OK=1; which optipng > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "optipng 
 
 if [ ${#} -eq 0 ]; then echo "Wrong number of arguments."; echo; usage; exit 1; fi
 
-zstd --ultra --22 --long=31 ${*}
+zstd --ultra -22 --long=31 $1 -o $2
