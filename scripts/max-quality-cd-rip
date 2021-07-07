@@ -1,0 +1,14 @@
+#!/bin/bash
+set -o errexit -o nounset -o pipefail
+
+# Command line parameter parsing and dependency checks.
+function desc  { echo "Rip audio cd in best quality"; }
+function usage { echo "Usage: $(basename ${0})"; }
+if [ ${#} -eq 1 ]; then if [ ${1} = "-h" -o ${1} = "--help" ]; then desc; echo; usage; exit 0; fi; fi
+OK=1; which abcde   > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "abcde not found"; exit 1; fi
+OK=1; which glyrc   > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "glyrc not found. It is required for cover art download.";       exit 1; fi
+OK=1; which convert > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "imagemagick not found. It is required for cover art download."; exit 1; fi
+
+
+if [ ${#} -ne 0 ]; then echo "Wrong number of arguments."; echo; usage; exit 1; fi
+abcde -G -B -k -o flac:"--best -e -m",mp3:"-m j -q 0 -V 2" -N
