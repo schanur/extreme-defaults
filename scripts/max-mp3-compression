@@ -10,4 +10,6 @@ OK=1; which lame > /dev/null || OK=0; if [ ${OK} -ne 1 ]; then echo "lame not fo
 
 if [ ${#} -lt 1 ]; then echo "Wrong number of arguments."; echo; usage; exit 1; fi
 
+
+
 lame -m j --replaygain-accurate --clipdetect --add-id3v2 -q 0 -V 2 "${@}"
